@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vasquez will mess you up</title>
+    <meta name="author" value="rach">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 0.5em;
+        }
+
+        #wrapper {
+            display: grid;
+            width: 100vw;
+            height: 100vh;
+            grid-template-rows: repeat(var(--rowNum), auto);
+            grid-template-columns: repeat(var(--colNum), auto);
+        }
+
+        .grid-item {
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+
+    </div>
+
+    <script>
+
+        (function () {
+
+            const rows = 10;
+            const cols = 10;
+
+            setRootProperties();
+
+            let num = Math.floor((Math.random() * 10) + 1);
+
+            for (let i = 1; i <= (rows * cols); i++) {
+                document.getElementById("wrapper").appendChild(makeNode());
+            }
+
+            function makeNode() {
+                var node = document.createElement("P");
+                node.classList.add('grid-item');
+                node.style.backgroundColor = makeRandomColor();
+                var textnode = document.createTextNode(node.style.backgroundColor.replace(/\s/g,''));
+                node.appendChild(textnode);
+                return makeEvents(node);
+            }
+
+            function makeEvents(node) {
+
+                node.addEventListener("click", function (e) {
+                    node.style.backgroundColor = "#000000";
+                });
+                node.addEventListener("mouseover", function () {
+                    // TODO
+                    if (!checkNode(node)) {
+                        node.style.backgroundColor = makeRandomColor();
+                        node.innerHTML = node.style.backgroundColor.replace(/\s/g,'');
+                    }
+                });
+                node.addEventListener("mouseout", function () {
+                    node.style.backgroundColor = makeRandomColor();
+                });
+                return node;
+            }
+
+            // TODO
+            function checkNode(node) {
+                if (node.style.backgroundColor == "rgb(0, 0, 0)") {
+                    return true;
+                }
+                return false;
+            }
+
+            function makeRandomColor() {
+                rColor = '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+                return rColor;
+            }
+
+            function setRootProperties() {
+                document.documentElement.style.setProperty('--rowNum', rows);
+                document.documentElement.style.setProperty('--colNum', cols);
+            }
+
+        })();
+
+    </script>
+
+</body>
+
+</html>
