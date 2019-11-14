@@ -50,39 +50,42 @@
                 var node = document.createElement("P");
                 node.classList.add('grid-item');
                 node.style.backgroundColor = makeRandomColor();
-                var textnode = document.createTextNode(node.style.backgroundColor.replace(/\s/g,''));
+                var textnode = document.createTextNode(node.style.backgroundColor.replace(/\s/g, ''));
                 node.appendChild(textnode);
                 return makeEvents(node);
             }
 
             function makeEvents(node) {
-
-                node.addEventListener("click", function (e) {
-                    node.style.backgroundColor = "#000000";
-                });
-                node.addEventListener("mouseover", function () {
-                    // TODO
-                    if (!checkNode(node)) {
-                        node.style.backgroundColor = makeRandomColor();
-                        node.innerHTML = node.style.backgroundColor.replace(/\s/g,'');
-                    }
-                });
-                node.addEventListener("mouseout", function () {
-                    node.style.backgroundColor = makeRandomColor();
-                });
+                node.addEventListener("click", clicker, false);
+                node.addEventListener("mouseover", over, false);
+                node.addEventListener("mouseout", out, false);
                 return node;
             }
 
-            // TODO
-            function checkNode(node) {
-                if (node.style.backgroundColor == "rgb(0, 0, 0)") {
-                    return true;
+            function clicker() {
+                if (this.style.backgroundColor == "rgb(0, 0, 0)") {
+                    this.style.backgroundColor = makeRandomColor();
+                    this.addEventListener("mouseover", over, false);
+                    this.addEventListener("mouseout", out, false);
+                } else {
+                    this.style.backgroundColor = "#000000";
+                    this.removeEventListener("mouseover", over);
+                    this.removeEventListener("mouseout", out);
                 }
-                return false;
             }
 
+            function over() {
+                this.style.backgroundColor = makeRandomColor();
+            }
+
+            function out() {
+                this.style.backgroundColor = makeRandomColor();
+            }
+
+            function r() { return Math.floor(Math.random() * 255) }
+
             function makeRandomColor() {
-                rColor = '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+                var rColor = 'rgb(' + r() + "," + r() + "," + r() + ')';
                 return rColor;
             }
 
